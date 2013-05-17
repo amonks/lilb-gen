@@ -1,6 +1,6 @@
 // Gibberish Generator (JavaScript).
 // Algorithm: Letter-based Markov text generator.
-// Keith Enevoldsen, thinkzone.wlonk.com
+// based on work by Keith Enevoldsen, thinkzone.wlonk.com
 
 function generate_gibberish(sample,lev)
 {
