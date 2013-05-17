@@ -118,6 +118,7 @@ get '/*' do
 	if artist.nil?
 		artist = Artist.create(:name => artistinput, :lyrics => nil, :haslyrics => false, :created_at => Time.now, :lyrics_at => Time.now)
 		@artist = artist
+		@allartists = Artist.all(:haslyrics => true, :lyrics.not => nil)
 		haml :newartist
 	# if artist has lyrics show the lyrics
 	elsif artist.haslyrics == true
@@ -126,6 +127,7 @@ get '/*' do
 		haml :generate
 	elsif artist.haslyrics == false
 		@artist = artist
+		@allartists = Artist.all(:haslyrics => true, :lyrics.not => nil)
 		haml :notyet
 	end
 end

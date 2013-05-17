@@ -1,1 +1,9 @@
-%h1 #{@artist.name} added
+%h1 OK, I added #{@artist.name} to the queue!
+%p
+	Our spider is working its way down the queue gathering lyrics lyrics. It takes a while, but once it's done, you'll be able to see lyrics for #{@artist.name}. In the meantime, check out some artists that have already been added:
+%ul
+	- @allartists.each do |artist|
+		- if artist.lyrics.length >= 5
+			%li
+				%a{:href=>"/#{artist.name}"}
+					= artist.name
