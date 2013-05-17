@@ -1,6 +1,6 @@
-%h1 #{@artist.name} has already been added to the queue!
-%p
-	Our spider is working its way down the queue gathering lyrics lyrics. It takes a while, but once it's done, you'll be able to see lyrics for #{@artist.name}. In the meantime, check out some artists that have already been added:
+%h3 I've heard of #{@artist.name}, but I haven't quite finished downloading their lyrics.
+:markdown
+	I'm gonna work my way through #{@artist.name}'s lyrics, and if you check back later I'll come up with something. In the mean time, check out some artists that I *have* heard of.
 %ul
 	- @allartists.each do |artist|
 		- if artist.lyrics.length >= 5
