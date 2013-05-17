@@ -2,10 +2,9 @@
 - context = ExecJS.compile(source)
 %ul#lyrics
 	- context.eval("generate_gibberish('#{@lyrics}',5)").split(/[\.\!\?]+[ \t]/).each do |lyrics|
-		- if ( lyrics.length >= 2 && lyrics.length <= 140 )
-			.four.columns.lyrics
-				.lyricstext
-					= lyrics
-				%form{:method=>"post"}
-					%input.formstyle{:type=>"text", :name=>"lyricspost", :id=>"lyricspost", :value=>"#{lyrics}",:style=>"display:none;"}
-					%input.postbutton(type="submit" value="post")
+		.four.columns.lyrics
+			.lyricstext
+				= lyrics
+			%form{:method=>"post"}
+				%input.formstyle{:type=>"text", :name=>"lyricspost", :id=>"lyricspost", :value=>"#{lyrics}",:style=>"display:none;"}
+				%input.postbutton(type="submit" value="post")
