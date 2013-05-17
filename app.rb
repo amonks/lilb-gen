@@ -45,7 +45,7 @@ def get_all_lyrics_by(artist,out)
 			lyrics = lyrics + coder.decode(lyricsbox.xpath('text()').to_s.gsub("Lyrics taken from rapgenius.com","").gsub(/[\.\!\?]/,". ").gsub(" .", "").gsub(/[\[].*[\]]/,"").gsub(/[\"\'\,]/,"").gsub("\n",""))
 			# woo progress
 			# I need to find out how to stream this so I stop getting timeouts
-			out.write href
+			puts href
 		end
 	end
 
@@ -81,7 +81,7 @@ get '/artist/*' do
 				lyrics = lyrics + coder.decode(lyricsbox.xpath('text()').to_s.gsub("Lyrics taken from rapgenius.com","").gsub(/[\.\!\?]/,". ").gsub(" .", "").gsub(/[\[].*[\]]/,"").gsub(/[\"\'\,]/,"").gsub("\n",""))
 				# woo progress
 				# I need to find out how to stream this so I stop getting timeouts
-				out.write href
+				out.puts href
 			end
 		end
 
