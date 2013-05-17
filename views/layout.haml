@@ -22,11 +22,14 @@
 	%body
 		.container
 			.header.sixteen.columns
-				%h1 Lyric Generator
+				:markdown
+					# Lyric Generator
+					## "Got my gold grill because you ain't you"
 			.ten.columns
 				= yield
-			.six.columns
+			.five.columns.offset-by-one
 				%form{:method => "post"}
+					%h3 Try Anyone:
 					%input{:type => "text", :name => "artist", :id => "artist", :value => "Lil B"}
 				:markdown
 					I can generate fake lyrics by any artist, but I was made for *Lil B*.
