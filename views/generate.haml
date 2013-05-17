@@ -1,10 +1,4 @@
 - source = open("http://monks.co/up/GibGen.js").read
 - context = ExecJS.compile(source)
 %ul#lyrics
-	- context.eval("generate_gibberish('#{@lyrics}',5)").split(/[\.\!\?]+[ \t]/).each do |lyrics|
-		.four.columns.lyrics
-			.lyricstext
-				= lyrics
-			%form{:method=>"post"}
-				%input.formstyle{:type=>"text", :name=>"lyricspost", :id=>"lyricspost", :value=>"#{lyrics}",:style=>"display:none;"}
-				%input.postbutton(type="submit" value="post")
+	= context.eval("generate_gibberish('#{@lyrics}',2)")
