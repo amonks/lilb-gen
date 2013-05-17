@@ -129,8 +129,7 @@ get '/*' do
 	if artist.nil?
 		artist = Artist.create(:name => artistinput, :lyrics => nil, :haslyrics => false, :created_at => Time.now, :lyrics_at => Time.now)
 		Thread.new do
-			lyrics = get_all_lyrics_by(artist.name)
-			artist.update(:lyrics => lyrics)
+			lyrics = add_lyrics_to(artist.name)
 			artist.update(:haslyrics => true)
 		end
 		@artist = artist
