@@ -3,7 +3,7 @@ source :gemcutter
 gem "sinatra"
 gem "httparty"
 gem "thin"
-gem "rack", "1.3.10"
+gem "rack"
 gem 'haml'
 gem 'execjs'
 gem 'sass'

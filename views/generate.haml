@@ -1,4 +1,4 @@
 - source = open("http://monks.co/up/GibGen.js").read
 - context = ExecJS.compile(source)
 %ul#lyrics
-	= context.eval("generate_gibberish('#{@lyrics}',2)")
+	= context.eval("generate_input('#{@lyrics}',2)")

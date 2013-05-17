@@ -4,13 +4,13 @@ require 'sinatra'
 require 'maruku'
 require 'execjs'
 require 'haml'
-# require 'sass'
+require 'sass'
 require 'open-uri'
 
 
 
 get '/' do
-	@lyrics = open("http://monks.co/up/lyrics.txt").read.encode('utf-8', :invalid => :replace, :undef => :replace, :replace => '_')
+	@lyrics = open("http://monks.co/up/lyrics.txt").read
 	haml :generate
 end
 
