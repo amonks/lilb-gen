@@ -133,5 +133,5 @@ get '/*' do
 		@artist = artist
 		@allartists = Artist.all(:haslyrics => true, :lyrics.not => nil)
 		haml :notyet
-	encode
+	end
 end
