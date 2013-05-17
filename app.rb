@@ -4,6 +4,7 @@ require 'sinatra'
 require 'maruku'
 require 'execjs'
 require 'haml'
+require 'sass'
 
 require 'htmlentities'
 require 'nokogiri'
