@@ -138,7 +138,7 @@ get '/*' do
 			artist.update(:haslyrics => true)
 		end
 		@artist = artist
-		@allartists = Artist.all(:haslyrics => true, :lyrics.not => nil)
+		@allartists = Artist.all(:lyrics.not => nil)
 		haml :newartist
 	# if artist has lyrics show the lyrics
 	elsif artist.lyrics.nil? == false and artist.lyrics.length >= 10
@@ -147,7 +147,7 @@ get '/*' do
 		haml :generate
 	else
 		@artist = artist
-		@allartists = Artist.all(:haslyrics => true, :lyrics.not => nil)
+		@allartists = Artist.all(:lyrics.not => nil)
 		haml :notyet
 	end
 end
