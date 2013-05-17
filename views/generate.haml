@@ -1,4 +1,11 @@
+%div.sixteen.columns
+	%h2	Here are some lyrics by #{@artist}
+.clear
 - source = open("http://monks.co/up/GibGen.js").read
 - context = ExecJS.compile(source)
 %ul#lyrics
-	= context.eval("generate_input('#{@lyrics}',2)")
+	- context.eval("generate_gibberish('#{@lyrics}',7)").split(/[\.\!\?]+[ \t]/).each do |lyric|
+		- if ( lyric.length >= 2 && lyric.length <= 140 )
+			.four.columns.lyric
+				.lyrictext
+					= lyric

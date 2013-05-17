@@ -1,0 +1,17 @@
+!!!
+%html
+	%head
+		%title LIL B SONG GENERATOR
+		%link{:href=>"/stylesheets/base.css", :media=>"screen", :rel=>"stylesheet", :type=>"text/css"}
+		%link{:href=>"/stylesheets/skeleton.css", :media=>"screen", :rel=>"stylesheet", :type=>"text/css"}
+		%link{:href=>"/stylesheets/layout.css", :media=>"screen", :rel=>"stylesheet", :type=>"text/css"}
+		%link{:href=>"/stylesheets/style.css", :media=>"screen", :rel=>"stylesheet", :type=>"text/css"}
+	%body
+		.container
+			.header.sixteen.columns
+				%h1 LYRIC GENERATOR
+			= yield
+			.clear
+			.footer
+				:markdown
+					&copy; [Andrew Monks](http://monks.co) 2013
