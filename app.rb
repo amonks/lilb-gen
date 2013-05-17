@@ -98,9 +98,9 @@ get '/' do
 	redirect '/lil_b'
 end
 
-get '/admin/count' do
-	@count = $testcount
-	puts @count
+get '/admin/list' do
+	@artists = Artist.all
+	haml :list
 end
 
 get '/admin/reset' do
