@@ -1,4 +1,4 @@
-# Fake lyrics generator!
+# Fake lyrics generator! Also lyricswiki spider!
 
 ## a nifty 1-day project by Andrew Monks
 
