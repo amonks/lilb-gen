@@ -97,11 +97,16 @@ get '/' do
 	redirect '/lil_b'
 end
 
+get '/admin/count' do
+	@count = $testcount
+	haml :dump
+end
+
 
 # put all the other stuff before the WiLdCaRd
 get '/*' do
 	# get/clean input
-	artistinput = params[:splat].to_s.gsub(/[^0-9a-z_ ]/i, '').downcase
+	artistinput = params[:splat].to_s.gsub(/[^0-9a-z_ ]/i, '').downcase.gsub(/\w\w*/,"_")
 
 	# get artist
 	artist = Artist.first(:name => artistinput)
