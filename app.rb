@@ -17,6 +17,3 @@ end
 get '/stylesheets/style.css' do
   sass :style
 end
-
-get '/lyrics.txt' do
-end
