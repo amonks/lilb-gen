@@ -11,4 +11,6 @@ gem 'maruku'
 gem 'htmlentities'
 gem 'nokogiri'
 gem 'json'
-gem 'sinatra-contrib'
+gem 'data_mapper'
+gem 'dm-postgres-adapter', :group => :production
+gem 'dm-sqlite-adapter', :group => :development

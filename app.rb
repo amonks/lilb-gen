@@ -6,20 +6,21 @@ require 'execjs'
 require 'haml'
 require 'open-uri'
 require 'sass'
-require 'datamapper'
+require 'data_mapper'
 require 'htmlentities'
 require 'nokogiri'
 require 'open-uri'
 require 'net/http'
 
 # DataMapper.setup(:default, ENV['HEROKU_POSTGRESQL_AMBER_URL'] || "sqlite3://#{Dir.pwd}/recall.db")
-DataMapper.setup(:default, 'sqlite::memory:')
+# DataMapper.setup(:default, 'sqlite::memory:')
+DataMapper.setup(:default, 'sqlite:///Users/ajm/Desktop/lilb-gen/data.db')
 
 class Artist
 	include DataMapper::Resource
 
-	property :name, 		String
-	property :lyrics, 		String
+	property :name, 		String, :key => true
+	property :lyrics, 		Text
 	property :haslyrics,	Boolean
 	property :created_at,	DateTime
 	property :lyrics_at,	DateTime
@@ -38,80 +39,83 @@ def remote_file_exists?(url)
 end
 
 # method to gather lyrics for artist
-class Artist
-	def self.get_lyrics
+def get_all_lyrics_by(input)
 
-		# lyricswiki encodes lyrics as individual html entities. get ready to parse!
-		coder = HTMLEntities.new
+	# lyricswiki encodes lyrics as individual html entities. get ready to parse!
+	coder = HTMLEntities.new
 
-		# open songs list, if song has lyrics add them to String 'lyrics'
-		doc = Nokogiri::HTML(open("http://lyrics.wikia.com/api.php?func=getSong&artist=" + self.name + "&fmt=html"))
-		lyrics = String.new
-		doc.xpath('//li/ul/li/a').map  { |link| link['href'] }.each do |href|
-			# only add url to array if lyricswiki has the lyrics
-			if remote_file_exists?(href)
-				songdoc = Nokogiri::HTML(open(href))
-				# get lyricsbox
-				lyricsbox = songdoc.xpath('//div[@class="lyricbox"]')
-				# replace br tags with periods so we can safely strip extra lyricswiki tags
-				lyricsbox.css('br').each{ |br| br.replace ". " }
-				# strip extra tags, remove rapgenius attribution, switch all stops to periods, remove anything in brackets (ie [chorus]), remove quotes slashes and commas, decode entities, and add to lyrics string
-				lyrics = lyrics + coder.decode(lyricsbox.xpath('text()').to_s.gsub("Lyrics taken from rapgenius.com","").gsub(/[\.\!\?]/,". ").gsub(" .", "").gsub(/[\[].*[\]]/,"").gsub(/[\"\'\/\,]/,"").gsub("\n",""))
-				# woo progress
-				# I need to find out how to stream this so I stop getting timeouts
-				puts "added " + href
-			end
+	# open songs list, if song has lyrics add them to String 'lyrics'
+	doc = Nokogiri::HTML(open("http://lyrics.wikia.com/api.php?func=getSong&artist=" + input + "&fmt=html"))
+	lyrics = String.new
+	doc.xpath('//li/ul/li/a').map  { |link| link['href'] }.each do |href|
+		# only add url to array if lyricswiki has the lyrics
+		if remote_file_exists?(href)
+			songdoc = Nokogiri::HTML(open(href))
+			# get lyricsbox
+			lyricsbox = songdoc.xpath('//div[@class="lyricbox"]')
+			# replace br tags with periods so we can safely strip extra lyricswiki tags
+			lyricsbox.css('br').each{ |br| br.replace ". " }
+			# strip extra tags, remove rapgenius attribution, switch all stops to periods, remove anything in brackets (ie [chorus]), remove quotes slashes and commas, decode entities, and add to lyrics string
+			lyrics = lyrics + coder.decode(lyricsbox.xpath('text()').to_s.gsub("Lyrics taken from rapgenius.com","").gsub(/[\.\!\?]/,". ").gsub(" .", "").gsub(/[\[].*[\]]/,"").gsub(/[\"\'\/\,]/,"").gsub("\n",""))
+			# woo progress
+			# I need to find out how to stream this so I stop getting timeouts
+			puts "added " + href
 		end
-
-		self.all(:lyrics => lyrics)
-		self.all(:haslyrics => true)
-		self.all(:lyrics_at => Time.now)
 	end
+
+	# self.update(:lyrics => lyrics, :haslyrics => true, :lyrics_at => Time.now)
+	# self.save
+	return lyrics
 end
 
 
 
 # background thread for lyrics downloading
+$testcount = 0
 Thread.new do
 	while true do 
-		Artist.first(:haslyrics => false).get_lyrics
+	    sleep 0.12
+		$testcount += 1
+		artist = Artist.last(:haslyrics => false)
+		if artist.nil? == false
+			lyrics = get_all_lyrics_by(artist.name)
+			puts lyrics
+			artist.update(:lyrics => lyrics)
+			artist.update(:haslyrics => true)
+		end
 	end
 end
 
 
 # woo sinatra
 
-get '/' do
-	@lyrics = open("http://monks.co/up/lyrics.txt").read
-	@artist = "Lil B"
-	haml :generate
-end
-
-get '/artist/*' do
-	# get/clean input
-	artistinput = params[:splat].to_s.gsub(/[^0-9a-z_ ]/i, '')
-	# title case
-	artistinput.gsub(/\w+/) do |word|
-	  word.capitalize
-	end
-
-	# get artist
-	@artist = Artist.get(artistinput)
-
-	# if artist isn't in database, add it to the database and redirect 
-	if @artist.exists == false
-		Artist.create(:name => artistinput, :lyrics => nil, :haslyrics => false, :created_at => Time.now, :lyrics_at => Time.now)
-		redirect '/'
-	# if artist is in the database and has lyrics, markov up
-	elsif @artist.haslyrics == true
-		@lyrics = @artist.lyrics
-		haml :generate
-	# if artist is in the database but doesn't yet have lyrics, redirect
-	else
-		redirect '/'
-	end
-end
-
 get '/stylesheets/style.css' do
 	sass :style
+end
+
+get '/' do
+	redirect '/lil_b'
+end
+
+get '/*' do
+	# get/clean input
+	artistinput = params[:splat].to_s.gsub(/[^0-9a-z_ ]/i, '').downcase
+
+	# get artist
+	artist = Artist.first(:name => artistinput)
+
+	# create artist if doesn't exist
+	if artist.nil?
+		artist = Artist.create(:name => artistinput, :lyrics => nil, :haslyrics => false, :created_at => Time.now, :lyrics_at => Time.now)
+		@artist = artist
+		haml :newartist
+	# if artist has lyrics show the lyrics
+	elsif artist.haslyrics == true
+		@artist = artist
+		@lyrics = @artist.lyrics
+		haml :generate
+	elsif artist.haslyrics == false
+		@artist = artist
+		haml :notyet
+	end
 end
