@@ -26,7 +26,6 @@ def remote_file_exists?(url)
 end
 
 def get_all_lyrics_by(artist)
-	artist = artist.to_s.gsub(/[^0-9a-z ]/i, '')
 	# lyricswiki encodes lyrics as individual html entities. get ready to parse!
 	coder = HTMLEntities.new
 
@@ -61,7 +60,7 @@ get '/' do
 end
 
 get '/artist/*' do
-	@artist = params[:splat].to_s
+	@artist = params[:splat].to_s.gsub(/[^0-9a-z_ ]/i, '')
 	@lyrics = get_all_lyrics_by(@artist)
 	haml :generate
 end
