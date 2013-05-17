@@ -106,7 +106,7 @@ end
 # put all the other stuff before the WiLdCaRd
 get '/*' do
 	# get/clean input
-	artistinput = params[:splat].to_s.gsub(/[^0-9a-z_ ]/i, '').downcase.gsub(/\w\w*/,"_")
+	artistinput = params[:splat].to_s.gsub(/[^0-9a-z_ ]/i, '').downcase.gsub(/\s\s*/,"_")
 
 	# get artist
 	artist = Artist.first(:name => artistinput)
