@@ -106,15 +106,20 @@ get '/' do
 	redirect '/lil_b'
 end
 
-get '/admin/list' do
-	@artists = Artist.all
-	haml :list
+get '/lyrics/*' do
+	# get/clean input
+	artistinput = params[:splat].to_s.gsub(/[^0-9a-z_ ]/i, '').downcase.gsub(/\s\s*/,"_")
+	# get artist
+	@artist = Artist.first(:name => artistinput)
+	haml :lyrics
 end
 
+# woo clear the whole database FUCK IT
 get '/admin/reset' do
 	Artist.destroy!
 end
 
+# for the form
 post '/*' do
 	redirect '/' + params[:artist]
 end
@@ -123,7 +128,6 @@ end
 get '/*' do
 	# get/clean input
 	artistinput = params[:splat].to_s.gsub(/[^0-9a-z_ ]/i, '').downcase.gsub(/\s\s*/,"_")
-
 	# get artist
 	artist = Artist.first(:name => artistinput)
 
