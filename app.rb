@@ -66,7 +66,9 @@ def add_lyrics_to(input)
 			# woo progress
 			puts "added " + href
 		end
-		@artist.update(:lyrics => lyrics)
+		sofar = @artist.lyrics
+		updated = @artist.lyrics + lyrics
+		@artist.update(:lyrics => updated)
 	end
 
 	# self.update(:lyrics => lyrics, :haslyrics => true, :lyrics_at => Time.now)
