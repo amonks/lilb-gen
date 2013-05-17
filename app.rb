@@ -99,7 +99,7 @@ end
 
 get '/admin/count' do
 	@count = $testcount
-	haml :dump
+	puts @count
 end
 
 get '/admin/reset' do
@@ -133,5 +133,5 @@ get '/*' do
 		@artist = artist
 		@allartists = Artist.all(:haslyrics => true, :lyrics.not => nil)
 		haml :notyet
-	end
+	encode
 end
