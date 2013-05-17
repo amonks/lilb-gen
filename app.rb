@@ -63,10 +63,10 @@ def add_lyrics_to(input)
 			lyricsbox.css('br').each{ |br| br.replace ". " }
 			# strip extra tags, remove rapgenius attribution, switch all stops to periods, remove anything in brackets (ie [chorus]), remove quotes slashes and commas, decode entities, and add to lyrics string
 			lyrics = lyrics + coder.decode(lyricsbox.xpath('text()').to_s.gsub("Lyrics taken from rapgenius.com","").gsub(/[\.\!\?]/,". ").gsub(" .", "").gsub(/[\[].*[\]]/,"").gsub(/[\"\'\/\,]/,"").gsub("\n",""))
-			@artist.update(:lyrics => @artist.lyrics + lyrics)
 			# woo progress
 			puts "added " + href
 		end
+		@artist.update(:lyrics => lyrics)
 	end
 
 	# self.update(:lyrics => lyrics, :haslyrics => true, :lyrics_at => Time.now)
