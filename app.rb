@@ -20,7 +20,7 @@ class Artist
 	include DataMapper::Resource
 
 	property :name, 		String, :key => true
-	property :lyrics, 		Text
+	property :lyrics, 		Text, :length => 500000
 	property :haslyrics,	Boolean
 	property :created_at,	DateTime
 	property :lyrics_at,	DateTime
@@ -45,8 +45,8 @@ def remote_file_exists?(url)
 end
 
 # method to gather lyrics for artist
-def get_all_lyrics_by(input)
-
+def add_lyrics_to(input)
+	@artist = Artist.first(:name => input)
 	# lyricswiki encodes lyrics as individual html entities. get ready to parse!
 	coder = HTMLEntities.new
 
@@ -63,8 +63,8 @@ def get_all_lyrics_by(input)
 			lyricsbox.css('br').each{ |br| br.replace ". " }
 			# strip extra tags, remove rapgenius attribution, switch all stops to periods, remove anything in brackets (ie [chorus]), remove quotes slashes and commas, decode entities, and add to lyrics string
 			lyrics = lyrics + coder.decode(lyricsbox.xpath('text()').to_s.gsub("Lyrics taken from rapgenius.com","").gsub(/[\.\!\?]/,". ").gsub(" .", "").gsub(/[\[].*[\]]/,"").gsub(/[\"\'\/\,]/,"").gsub("\n",""))
+			@artist.update(:lyrics => @artist.lyrics + lyrics)
 			# woo progress
-			# I need to find out how to stream this so I stop getting timeouts
 			puts "added " + href
 		end
 	end
@@ -137,15 +137,11 @@ get '/*' do
 		@allartists = Artist.all(:haslyrics => true, :lyrics.not => nil)
 		haml :newartist
 	# if artist has lyrics show the lyrics
-	elsif artist.haslyrics == true
-		if artist.lyrics.length <= 10
-			artist.haslyrics = false
-			redirect '/'
-		end
+	elsif artist.lyrics.nil? == false and artist.lyrics.length >= 10
 		@artist = artist
 		@lyrics = @artist.lyrics
 		haml :generate
-	elsif artist.haslyrics == false
+	else
 		@artist = artist
 		@allartists = Artist.all(:haslyrics => true, :lyrics.not => nil)
 		haml :notyet
