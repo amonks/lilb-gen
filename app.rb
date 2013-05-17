@@ -63,7 +63,6 @@ end
 get '/*' do
 	@artist = params[:splat].to_s
 	@lyrics = get_all_lyrics_by(@artist)
-	sleep 100
 	haml :generate
 end
 
