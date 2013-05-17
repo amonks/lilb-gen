@@ -12,9 +12,9 @@ require 'nokogiri'
 require 'open-uri'
 require 'net/http'
 
-# DataMapper.setup(:default, ENV['HEROKU_POSTGRESQL_AMBER_URL'] || "sqlite3://#{Dir.pwd}/recall.db")
+DataMapper.setup(:default, ENV['HEROKU_POSTGRESQL_AMBER_URL'] || "sqlite3://#{Dir.pwd}/recall.db")
 # DataMapper.setup(:default, 'sqlite::memory:')
-DataMapper.setup(:default, 'sqlite:///Users/ajm/Desktop/lilb-gen/data.db')
+# DataMapper.setup(:default, 'sqlite:///Users/ajm/Desktop/lilb-gen/data.db')
 
 class Artist
 	include DataMapper::Resource
@@ -87,16 +87,18 @@ Thread.new do
 end
 
 
-# woo sinatra
-
+# stylesheets duh
 get '/stylesheets/style.css' do
 	sass :style
 end
 
+# default to Lil B
 get '/' do
 	redirect '/lil_b'
 end
 
+
+# put all the other stuff before the WiLdCaRd
 get '/*' do
 	# get/clean input
 	artistinput = params[:splat].to_s.gsub(/[^0-9a-z_ ]/i, '').downcase
