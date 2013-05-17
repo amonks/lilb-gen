@@ -4,7 +4,7 @@ require 'sinatra'
 require 'maruku'
 require 'execjs'
 require 'haml'
-require 'sass'
+# require 'sass'
 require 'open-uri'
 
 

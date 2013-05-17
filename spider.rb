@@ -23,29 +23,22 @@ def get_all_lyrics_by(artist)
 
 	# until I figure out where to put this so it doesn't timeout i'm just gonna run with lyrics in a .txt file
 
-	# open songs list; make array of song urls
-	# worth doing this every load in case new lyrics have been added
+	# open songs list, if song has lyrics add them to String 'lyrics'
 	doc = Nokogiri::HTML(open("http://lyrics.wikia.com/api.php?func=getSong&artist=" + artist + "&fmt=html"))
-	songs = Array.new
+	lyrics = String.new
 	doc.xpath('//li/ul/li/a').map  { |link| link['href'] }.each do |href|
 		# only add url to array if lyricswiki has the lyrics
 		if remote_file_exists?(href)
-			songs.push(href)
+			songdoc = Nokogiri::HTML(open(href))
+			# get lyricsbox
+			lyricsbox = songdoc.xpath('//div[@class="lyricbox"]')
+			# replace br tags with periods so we can safely strip extra lyricswiki tags
+			lyricsbox.css('br').each{ |br| br.replace ". " }
+			# strip extra tags, remove rapgenius attribution, switch all stops to periods, remove anything in brackets (ie [chorus]), remove quotes and commas, decode entities, and add to lyrics string
+			lyrics = lyrics + coder.decode(lyricsbox.xpath('text()').to_s.gsub("Lyrics taken from rapgenius.com","").gsub(/[\.\!\?]/,". ").gsub(" .", "").gsub(/[\[].*[\]]/,"").gsub(/[\"\'\,]/,""))
+			# woo progress
 			puts "added " + href
 		end
-	end
-
-	# string to hold all lyrics
-	lyrics = String.new
-	# open each song
-	songs.each do |song|
-		doc = Nokogiri::HTML(open(song))
-		# get lyricsbox
-		lyricsbox = doc.xpath('//div[@class="lyricbox"]')
-		# replace br tags with periods so we can safely strip extra lyricswiki tags
-		lyricsbox.css('br').each{ |br| br.replace ". " }
-		# strip extra tags, add newlines after punctuation (for readability i guess), decode entities, and add to lyrics string
-		lyrics = lyrics + coder.decode(lyricsbox.xpath('text()').to_s.gsub(/[\.\!\?]/,". \n"))
 	end
 
 	return lyrics
