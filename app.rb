@@ -1,7 +1,6 @@
 # lilb.rb
 
 require 'sinatra'
-require 'sinatra/contrib'
 require 'maruku'
 require 'execjs'
 require 'haml'
@@ -26,7 +25,7 @@ def remote_file_exists?(url)
   end
 end
 
-def get_all_lyrics_by(artist,out)
+def get_all_lyrics_by(artist)
 	# lyricswiki encodes lyrics as individual html entities. get ready to parse!
 	coder = HTMLEntities.new
 
@@ -45,7 +44,7 @@ def get_all_lyrics_by(artist,out)
 			lyrics = lyrics + coder.decode(lyricsbox.xpath('text()').to_s.gsub("Lyrics taken from rapgenius.com","").gsub(/[\.\!\?]/,". ").gsub(" .", "").gsub(/[\[].*[\]]/,"").gsub(/[\"\'\,]/,"").gsub("\n",""))
 			# woo progress
 			# I need to find out how to stream this so I stop getting timeouts
-			puts href
+			puts "added " + href
 		end
 	end
 
@@ -62,32 +61,9 @@ get '/' do
 end
 
 get '/artist/*' do
-	stream do |out|
-		@artist = params[:splat].to_s.gsub(/[^0-9a-z_ ]/i, '')
-		coder = HTMLEntities.new
-
-		# open songs list, if song has lyrics add them to String 'lyrics'
-		doc = Nokogiri::HTML(open("http://lyrics.wikia.com/api.php?func=getSong&artist=" + @artist + "&fmt=html"))
-		lyrics = String.new
-		doc.xpath('//li/ul/li/a').map  { |link| link['href'] }.each do |href|
-			# only add url to array if lyricswiki has the lyrics
-			if remote_file_exists?(href)
-				songdoc = Nokogiri::HTML(open(href))
-				# get lyricsbox
-				lyricsbox = songdoc.xpath('//div[@class="lyricbox"]')
-				# replace br tags with periods so we can safely strip extra lyricswiki tags
-				lyricsbox.css('br').each{ |br| br.replace ". " }
-				# strip extra tags, remove rapgenius attribution, switch all stops to periods, remove anything in brackets (ie [chorus]), remove quotes and commas, decode entities, and add to lyrics string
-				lyrics = lyrics + coder.decode(lyricsbox.xpath('text()').to_s.gsub("Lyrics taken from rapgenius.com","").gsub(/[\.\!\?]/,". ").gsub(" .", "").gsub(/[\[].*[\]]/,"").gsub(/[\"\'\,]/,"").gsub("\n",""))
-				# woo progress
-				# I need to find out how to stream this so I stop getting timeouts
-				out.puts href
-			end
-		end
-
-		@lyrics = lyrics
-		haml :generate
-	end
+	@artist = params[:splat].to_s.gsub(/[^0-9a-z_ ]/i, '')
+	@lyrics = get_all_lyrics_by(@artist)
+	haml :generate
 end
 
 get '/stylesheets/style.css' do
