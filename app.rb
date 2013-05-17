@@ -12,9 +12,9 @@ require 'nokogiri'
 require 'open-uri'
 require 'net/http'
 
-DataMapper.setup(:default, ENV['HEROKU_POSTGRESQL_AMBER_URL'] || "sqlite3://#{Dir.pwd}/recall.db")
 # DataMapper.setup(:default, 'sqlite::memory:')
 # DataMapper.setup(:default, 'sqlite:///Users/ajm/Desktop/lilb-gen/data.db')
+DataMapper.setup(:default, 'postgres://vophbqmflswxku:IxKMYh76a2DIsHa0VJ5jCXjkdx@ec2-174-129-204-172.compute-1.amazonaws.com/dd961upl5ajv7p')
 
 class Artist
 	include DataMapper::Resource
