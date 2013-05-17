@@ -102,6 +102,10 @@ get '/admin/count' do
 	haml :dump
 end
 
+get '/admin/reset' do
+	Artist.destroy!
+end
+
 post '/*' do
 	redirect '/' + params[:artist]
 end
