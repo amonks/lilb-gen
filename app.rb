@@ -49,7 +49,7 @@ def add_lyrics_to(input)
 	@artist = Artist.first(:name => input)
 	# lyricswiki encodes lyrics as individual html entities. get ready to parse!
 	coder = HTMLEntities.new
-	@sofar = ""
+	sofar = String.new
 	# open songs list, if song has lyrics add them to String 'lyrics'
 	doc = Nokogiri::HTML(open("http://lyrics.wikia.com/api.php?func=getSong&artist=" + input + "&fmt=html"))
 	lyrics = String.new
@@ -66,9 +66,9 @@ def add_lyrics_to(input)
 			# woo progress
 			puts "added " + href
 		end
-		lyrics = @sofar + lyrics
+		lyrics = sofar + lyrics
 		@artist.update(:lyrics => lyrics)
-		@sofar = lyrics
+		sofar = lyrics
 	end
 
 	# self.update(:lyrics => lyrics, :haslyrics => true, :lyrics_at => Time.now)
