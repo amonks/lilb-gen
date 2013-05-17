@@ -1,0 +1,33 @@
+- source = open("http://monks.co/up/GibGen.js").read
+- context = ExecJS.compile(source)
+%ul#statuses
+	- context.eval("generate_gibberish('#{@statuses}',5)").split(/[\.\!\?]+[ \t]/).each do |status|
+		- if ( status.length >= 2 && status.length <= 140 )
+			.four.columns.status
+				.statustext
+					= status
+				%form{:method=>"post"}
+					%input.formstyle{:type=>"text", :name=>"statuspost", :id=>"statuspost", :value=>"#{status}",:style=>"display:none;"}
+					%input.postbutton(type="submit" value="post")
+/ %h2 chat
+/ %ul#chats
+/ 	- context.eval("generate_gibberish('#{@chats}',6)").split(/[\.\!\?]+[ \t]/).each do |chat|
+/ 		- if (chat.length >= 2)
+/ 			%li
+/ 				= chat + "."
+/ %h1 debug
+/ %h2	all posts
+/ = @statuses
+/ %h2 all chats
+/ = @chats
+
+/ %h1 form
+/ %form{:method=>"post"}
+/ 	%input.formstyle{:type=>"text", :name=>"statuspost", :id=>"statuspost", :value=>"Homer"}
+/ 	%input(type="submit" value="post")
+
+/ %h1 me
+/ %p
+/ 	= @graph.get_object("me")
+/ %p
+/ 	= @graph.get_connections("me", "feed")
