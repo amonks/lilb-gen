@@ -15,7 +15,7 @@
 			.six.columns
 				%h3 Artist
 				%form{:method => "post"}
-					%input{:type => "text", :name => "artist", :id => "artist", :value => "#{@artist.name}"}
+					%input{:type => "text", :name => "artist", :id => "artist", :value => "#{@artist.name.split('_').map(&:capitalize).join(' ')}"}
 				:markdown
 					I can generate fake lyrics by any artist, but I was made for *Lil B*.
 
@@ -23,6 +23,6 @@
 
 					I work using [Markov Chains](http://en.wikipedia.org/wiki/Markov_chains). I'll read through all of someone's lyrics, and figure out which words are most likely to follow other words. To generate a new fake line, I'll pick a starting word and then use those probabilities to pick other words to come after it.
 			.clear
-			.footer
+			.sixteen.columns.footer
 				:markdown
 					&copy; [Andrew Monks](http://monks.co) 2013
