@@ -132,6 +132,10 @@ get '/*' do
 		haml :newartist
 	# if artist has lyrics show the lyrics
 	elsif artist.haslyrics == true
+		if artist.lyrics.length <= 10
+			artist.haslyrics = false
+			redirect '/'
+		end
 		@artist = artist
 		@lyrics = @artist.lyrics
 		haml :generate
