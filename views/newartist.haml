@@ -1,9 +1,9 @@
-%h3 I haven't heard of #{@artist.name.split('_').map(&:capitalize).join(' ')} before, but I'll look them up.
+%h3 I haven't heard of #{@artist.name.titlecase} before, but I'll look them up.
 :markdown
-	I'm gonna work my way through #{@artist.name.split('_').map(&:capitalize).join(' ')}'s lyrics, and if you check back later I'll come up with something. In the mean time, check out some artists that I *have* heard of.
+	I'm gonna work my way through #{@artist.name.titlecase}'s lyrics, and if you check back later I'll come up with something. In the mean time, check out some artists that I *have* heard of.
 %ul
 	- @allartists.each do |artist|
 		- if artist.lyrics.length >= 5
 			%li
-				%a{:href=>"/#{artist.name}"}
+				%a{:href=>"/#{artist.name.titlecase}"}
 					= artist.name

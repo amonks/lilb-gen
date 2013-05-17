@@ -1,4 +1,4 @@
-%h3	Here are some lyrics that could be by #{@artist.name.split('_').map(&:capitalize).join(' ')}
+%h3	Here are some lyrics that could be by #{@artist.name.titlecase}
 - source = open("http://monks.co/up/GibGen.js").read
 - context = ExecJS.compile(source)
 %ul#lyrics

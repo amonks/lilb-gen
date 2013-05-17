@@ -30,6 +30,12 @@ DataMapper.finalize
 DataMapper.auto_upgrade!
 
 
+class String
+  def titlecase
+    split('_').map(&:capitalize).join(' ')
+  end
+end
+
 # to check if lyricswiki has the lyrics to a particular song
 def remote_file_exists?(url)
   url = URI.parse(url)

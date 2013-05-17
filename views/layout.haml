@@ -15,7 +15,7 @@
 			.six.columns
 				%h3 Artist
 				%form{:method => "post"}
-					%input{:type => "text", :name => "artist", :id => "artist", :value => "#{@artist.name.split('_').map(&:capitalize).join(' ')}"}
+					%input{:type => "text", :name => "artist", :id => "artist", :value => "#{@artist.name.titlecase}"}
 				:markdown
 					I can generate fake lyrics by any artist, but I was made for *Lil B*.
 
