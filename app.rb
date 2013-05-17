@@ -72,19 +72,20 @@ end
 
 # background thread for lyrics downloading
 $testcount = 0
-Thread.new do
-	while true do 
-	    sleep 0.12
-		$testcount += 1
-		artist = Artist.last(:haslyrics => false)
-		if artist.nil? == false
-			lyrics = get_all_lyrics_by(artist.name)
-			puts lyrics
-			artist.update(:lyrics => lyrics)
-			artist.update(:haslyrics => true)
-		end
-	end
-end
+
+# Thread.new do
+# 	while true do 
+# 	    sleep 0.12
+# 		$testcount += 1
+# 		artist = Artist.last(:haslyrics => false)
+# 		if artist.nil? == false
+# 			lyrics = get_all_lyrics_by(artist.name)
+# 			puts lyrics
+# 			artist.update(:lyrics => lyrics)
+# 			artist.update(:haslyrics => true)
+# 		end
+# 	end
+# end
 
 
 # stylesheets duh
@@ -121,6 +122,11 @@ get '/*' do
 	# create artist if doesn't exist
 	if artist.nil?
 		artist = Artist.create(:name => artistinput, :lyrics => nil, :haslyrics => false, :created_at => Time.now, :lyrics_at => Time.now)
+		Thread.new do
+			lyrics = get_all_lyrics_by(artist.name)
+			artist.update(:lyrics => lyrics)
+			artist.update(:haslyrics => true)
+		end
 		@artist = artist
 		@allartists = Artist.all(:haslyrics => true, :lyrics.not => nil)
 		haml :newartist
