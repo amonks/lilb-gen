@@ -102,6 +102,9 @@ get '/admin/count' do
 	haml :dump
 end
 
+post '/*' do
+	redirect '/' + params[:artist]
+end
 
 # put all the other stuff before the WiLdCaRd
 get '/*' do
