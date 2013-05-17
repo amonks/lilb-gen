@@ -1,11 +1,12 @@
 - @artists.each do |artist|
-	%h1
-		= artist.name
-	%h2 
-		= artist.haslyrics
-	%h2 lyrics
-	= artist.lyrics
-	%h2 created at
-	= artist.created_at
-	%h2 lyrics at
-	= artist.lyrics_at
+	- if artist.nil? != true
+		%h1
+			= artist.name
+		%h2 
+			= artist.haslyrics
+		%h2 lyrics
+		= artist.lyrics
+		%h2 created at
+		= artist.created_at
+		%h2 lyrics at
+		= artist.lyrics_at

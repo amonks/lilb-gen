@@ -13,3 +13,7 @@ This is cool for a bunch of reasons:
 2. Once it's been up for a while, I'll have scraped myself a pretty decent lyrics database based on the artists people look up.
 
 3. It's futureproof: I don't have to worry about Hot New Bands, again because I'm relying on Lyricswiki.
+
+### issues:
+
+* 	right now if the spider thread is interrupted somehow, that artist is forever stuck in the database without lyrics. The cleanest solution is probably to store lyrics as a hash of songs rather than as a full string, so that A) lyrics can still be generated from a partial crawl and B) a new instance of the spider can resume rather than restarting. Plus I'd be able to react to newly added lyrics better.
