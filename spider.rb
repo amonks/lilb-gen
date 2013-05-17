@@ -35,7 +35,7 @@ def get_all_lyrics_by(artist)
 			# replace br tags with periods so we can safely strip extra lyricswiki tags
 			lyricsbox.css('br').each{ |br| br.replace ". " }
 			# strip extra tags, remove rapgenius attribution, switch all stops to periods, remove anything in brackets (ie [chorus]), remove quotes and commas, decode entities, and add to lyrics string
-			lyrics = lyrics + coder.decode(lyricsbox.xpath('text()').to_s.gsub("Lyrics taken from rapgenius.com","").gsub(/[\.\!\?]/,". ").gsub(" .", "").gsub(/[\[].*[\]]/,"").gsub(/[\"\'\,]/,""))
+			lyrics = lyrics + coder.decode(lyricsbox.xpath('text()').to_s.gsub("Lyrics taken from rapgenius.com","").gsub(/[\.\!\?]/,". ").gsub(" .", "").gsub(/[\[].*[\]]/,"").gsub(/[\"\'\,]/,"").gsub("\n",""))
 			# woo progress
 			puts "added " + href
 		end
