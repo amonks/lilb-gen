@@ -11,6 +11,7 @@ GEM
     httparty (0.11.0)
       multi_json (~> 1.0)
       multi_xml (>= 0.5.2)
+    json (1.7.7)
     maruku (0.6.1)
       syntax (>= 1.0.0)
     multi_json (1.7.3)
@@ -39,6 +40,7 @@ DEPENDENCIES
   haml
   htmlentities
   httparty
+  json
   maruku
   nokogiri
   rack
