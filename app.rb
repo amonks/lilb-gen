@@ -60,7 +60,7 @@ get '/' do
 	haml :generate
 end
 
-get '/*' do
+get '/artist/*' do
 	@artist = params[:splat].to_s
 	@lyrics = get_all_lyrics_by(@artist)
 	haml :generate
