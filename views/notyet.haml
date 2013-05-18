@@ -5,5 +5,5 @@
 	- @allartists.each do |artist|
 		- if artist.lyrics.length >= 5
 			%li
-				%a{:href=>"/#{artist.name}"}
+				%a{:href=>"/#{artist.name.titlecase}"}
 					= artist.name.titlecase
