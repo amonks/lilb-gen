@@ -16,4 +16,4 @@ This is cool for a bunch of reasons:
 
 ### issues:
 
-* 	right now if the spider thread is interrupted somehow, that artist is forever stuck in the database without lyrics. The cleanest solution is probably to store lyrics as a hash of songs rather than as a full string, so that A) lyrics can still be generated from a partial crawl and B) a new instance of the spider can resume rather than restarting. Plus I'd be able to react to newly added lyrics better.
+*	The spider sometimes doesn't stop when it gets to the last song by an artist and sometimes ends up making a huuuuuuuuuge string with several copies of the artists' discography. I have no idea why.
