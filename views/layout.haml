@@ -30,7 +30,7 @@
 			.five.columns.offset-by-one
 				%form{:method => "post"}
 					%h3 Try Anyone:
-					%input{:type => "text", :name => "artist", :id => "artist", :value => "Lil B"}
+					%input{:type => "text", :name => "artist", :id => "artist", :value => "Lil B", :onfocus =>"this.value=''"}
 				:markdown
 					I can generate fake lyrics by any artist, but I was made for *Lil B*.
 
