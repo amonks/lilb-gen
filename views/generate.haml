@@ -2,7 +2,8 @@
 - source = open("http://monks.co/up/GibGen.js").read
 - context = ExecJS.compile(source)
 %ul#lyrics
-	- context.eval("generate_gibberish('#{@artist.lyrics}',7)").split(/[\.\!\?]+[ \t]/).each do |lyric|
-		- if ( lyric.length >= 2 && lyric.length <= 140 )
+	- output = context.eval("generate_gibberish('#{@artist.lyrics}',7)").split(/[\.\!\?]+[ \t]/)
+	- output.each_with_index do |lyric, index|
+		- if ( lyric.length >= 2 && lyric.length <= 140 && index != output.length - 1)
 			%li.lyric
 				= lyric
