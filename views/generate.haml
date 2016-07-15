@@ -1,5 +1,5 @@
 %h3	Here are some lyrics that could be by #{@artist.name.titlecase}
-- source = open("http://monks.co/up/GibGen.js").read
+- source = open("https://monks.co/up/GibGen.js").read
 - context = ExecJS.compile(source)
 %ul#lyrics
 	- output = context.eval("generate_gibberish('#{@artist.lyrics}',7)").split(/[\.\!\?]+[ \t]/)
