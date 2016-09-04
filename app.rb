@@ -14,7 +14,7 @@ require 'net/http'
 
 # DataMapper.setup(:default, 'sqlite::memory:')
 # DataMapper.setup(:default, 'sqlite:///Users/ajm/Desktop/lilb-gen/data.db')
-DataMapper.setup(:default, 'postgres://vophbqmflswxku:IxKMYh76a2DIsHa0VJ5jCXjkdx@ec2-174-129-204-172.compute-1.amazonaws.com/dd961upl5ajv7p')
+DataMapper.setup(:default, ENV['DATABASE_URL'])
 
 class Artist
 	include DataMapper::Resource
